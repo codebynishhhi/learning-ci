@@ -1,4 +1,5 @@
 name: Pipeline to build on PR
+
 on:
   pull_request:
     branches:
@@ -7,13 +8,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-        # clones the repository
       - uses: actions/checkout@v3
-    #   installs Node.js
+
       - name: Use Node.js
         run: echo "Hello, world!"
-
 
       - name: Install dependencies
         run: npm install
