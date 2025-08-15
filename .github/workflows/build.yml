@@ -9,22 +9,31 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: mysecretpassword
+          POSTGRES_DB: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' 
+          node-version: '18'
 
       - name: Install dependencies
         run: npm install
-
-      - name: Print working directory
-        run: pwd
-
-      - name: List all the files
-        run: ls -R packages/db/prisma
 
       - name: Generate Prisma Client
         run: npm run db:generate
